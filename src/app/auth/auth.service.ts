@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { User } from './user.model';
 
@@ -26,11 +27,13 @@ export class AuthService {
   signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAZP5nby347Ha8pVp1F0YEkZwDJ6VUD7FA',
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser',
         {
           email: email,
           password: password,
           returnSecureToken: true
+        },{
+          params:new HttpParams().set("key",environment.fireBaseApiKey)
         }
       )
       .pipe(
@@ -49,11 +52,13 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAZP5nby347Ha8pVp1F0YEkZwDJ6VUD7FA',
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword',
         {
           email: email,
           password: password,
           returnSecureToken: true
+        },{
+          params:new HttpParams().set("key",environment.fireBaseApiKey)
         }
       )
       .pipe(
